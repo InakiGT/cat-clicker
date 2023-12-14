@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat</title>
+</head>
+<body>
+    <h1>Cat Clicker</h1>
+    <ul>
+        {% for cat in cats.cats %}
+        <li><a href="cat?id={{ cat.id }}">{{ cat.name }}</a></li>
+        {% endfor %}
+    </ul>
+    <section>
+        <h2>{{ cats.cat.name }}</h2>
+        <p id="1">Count: <span id="count">{{ cats.cat.count }}</span></p>
+        <button id="button">
+            <img  src="{{ cats.cat.img }}" />
+        </button>
+    </section>
+
+    <a><img src="" /></a>
+
+    <style>
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style: none;
+        }
+
+        img {
+            width: 50%;
+            max-height: 600px;
+        }
+
+        button {
+            background-color: transparent;
+            border: none
+        }
+    </style>
+    <script>
+        const id = document.location.search.substring(1).split('=')[1];
+
+        const button = document.getElementById('button');
+        const counter = document.getElementById('count');
+
+
+        button.addEventListener('click', e => {
+            e.preventDefault();
+
+            let count = parseInt(counter.textContent)
+            counter.textContent = ++count;
+
+            fetch(`/cat?id=${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    count: count,
+                }),
+            });
+        });
+    </script>
+</body>
+</html>
